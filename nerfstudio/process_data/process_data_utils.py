@@ -225,6 +225,9 @@ def copy_images_list(
                 imageio.imsave(copied_image_path, rgb)
                 image_paths[idx] = copied_image_path
             else:
+                if verbose:
+                    CONSOLE.log(f"Image path: {image_path}")
+                    CONSOLE.log(f"Copied image path: {copied_image_path}")
                 shutil.copy(image_path, copied_image_path)
         except shutil.SameFileError:
             pass

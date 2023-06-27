@@ -214,11 +214,18 @@ def copy_images_list(
     # Images should be 1-indexed for the rest of the pipeline.
     for idx, image_path in enumerate(image_paths):
         if verbose:
+            CONSOLE.log(image_paths)
             CONSOLE.log(f"Copying image {idx + 1} of {len(image_paths)}...")
         copied_image_path = image_dir / f"frame_{idx + 1:05d}{image_path.suffix}"
+        if verbose:
+            CONSOLE.log(f"Copied image path: {copied_image_path}")
         try:
+            if verbose:
+                CONSOLE.log("In try block")
             # if CR2 raw, we want to read raw and write TIFF, and change the file suffix for downstream processing
             if image_path.suffix.lower() in ALLOWED_RAW_EXTS:
+                if verbose:
+                    CONSOLE.log("Suffix is allowed extension")
                 copied_image_path = image_dir / f"frame_{idx + 1:05d}{RAW_CONVERTED_SUFFIX}"
                 with rawpy.imread(str(image_path)) as raw:
                     rgb = raw.postprocess()
@@ -226,12 +233,15 @@ def copy_images_list(
                 image_paths[idx] = copied_image_path
             else:
                 if verbose:
-                    CONSOLE.log(f"Image path: {image_path}")
-                    CONSOLE.log(f"Copied image path: {copied_image_path}")
+                    CONSOLE.log("Using shutil.copy")
                 shutil.copy(image_path, copied_image_path)
         except shutil.SameFileError:
+            if verbose:
+                CONSOLE.log("shutil.SameFileError encountered. Skipping image")
             pass
         copied_image_paths.append(copied_image_path)
+        if verbose:
+            CONSOLE.log(f"Copied image paths: {copied_image_paths}")
 
     if crop_border_pixels is not None:
         file_type = image_paths[0].suffix

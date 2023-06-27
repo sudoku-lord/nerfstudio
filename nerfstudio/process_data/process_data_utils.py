@@ -214,7 +214,7 @@ def copy_images_list(
     # Images should be 1-indexed for the rest of the pipeline.
     for idx, image_path in enumerate(image_paths):
         if verbose:
-            CONSOLE.log(image_paths)
+            CONSOLE.log(f"CURR IMAGE PATH: {image_path}")
             CONSOLE.log(f"Copying image {idx + 1} of {len(image_paths)}...")
         copied_image_path = image_dir / f"frame_{idx + 1:05d}{image_path.suffix}"
         if verbose:

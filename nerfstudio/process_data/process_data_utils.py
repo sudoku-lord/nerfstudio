@@ -204,10 +204,15 @@ def copy_images_list(
 
     # Remove original directory only if we provide a proper image folder path
     if image_dir.is_dir() and len(image_paths):
+        if verbose:
+            CONSOLE.log("IMAGE DIRECTORY IS VALID")
         # check that output directory is not the same as input directory
         if image_dir != image_paths[0].parent:
             shutil.rmtree(image_dir, ignore_errors=True)
         image_dir.mkdir(exist_ok=True, parents=True)
+    else:
+        if verbose:
+            CONSOLE.log("ERROR: INVALID IMAGE PATH")
 
     copied_image_paths = []
 
